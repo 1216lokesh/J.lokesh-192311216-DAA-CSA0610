@@ -1,0 +1,99 @@
+# PSEUDOCODE – DAA ASSIGNMENT 1
+## Student Record Search System
+
+### 1. Iterative Linear Search
+
+```
+ALGORITHM LinearSearch(A, n, key)
+
+BEGIN
+    FOR i ← 0 TO n - 1 DO
+        IF A[i].ID = key THEN
+            RETURN i
+        END IF
+    END FOR
+
+    RETURN NOT_FOUND
+END
+```
+
+**Time Complexity:** O(n)
+
+### 2. Recursive Binary Search
+
+*Precondition: Student records are sorted by student ID.*
+
+```
+ALGORITHM BinarySearch(A, low, high, key)
+
+BEGIN
+    IF low > high THEN
+        RETURN NOT_FOUND
+    END IF
+
+    mid ← (low + high) DIV 2
+
+    IF A[mid].ID = key THEN
+        RETURN mid
+    ELSE IF key < A[mid].ID THEN
+        RETURN BinarySearch(A, low, mid - 1, key)
+    ELSE
+        RETURN BinarySearch(A, mid + 1, high, key)
+    END IF
+END
+```
+
+**Time Complexity:** O(log n), excluding sorting.
+
+**Recurrence Relation:**
+
+T(n) = T(n/2) + O(1)
+
+**Result:** T(n) = O(log n)
+
+### 3. Hash-Based Search
+
+```
+ALGORITHM HashSearch(HashTable, key)
+
+BEGIN
+    IF key EXISTS IN HashTable THEN
+        RETURN HashTable[key]
+    ELSE
+        RETURN NOT_FOUND
+    END IF
+END
+```
+
+**Time Complexity:**
+- Average case: O(1)
+- Worst case: O(n)
+
+**Preprocessing:** Insert all student records into the hash table before performing searches. Expected construction time is O(n).
+
+### 4. Main Algorithm for Testing
+
+```
+ALGORITHM CompareSearchAlgorithms
+
+BEGIN
+    sizes ← [1000, 10000, 100000, 1000000]
+
+    FOR EACH n IN sizes DO
+        Generate n student records
+        Select a target student ID
+
+        Measure LinearSearch execution time
+
+        Sort records by student ID
+        Measure BinarySearch execution time
+
+        Build a hash table
+        Measure HashSearch execution time
+
+        Store all execution times in results.csv
+    END FOR
+
+    Display comparison results
+END
+```
