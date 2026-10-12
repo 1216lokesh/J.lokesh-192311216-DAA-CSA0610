@@ -1,0 +1,124 @@
+
+DAA ASSIGNMENT 1
+SCALABILITY AUDIT OF AN E-COMMERCE PLATFORM
+
+M1: DUPLICATE-LISTING DETECTOR
+
+INPUT: Product catalogue containing n products
+OUTPUT: Marked duplicate products
+
+FOR i = 0 TO n - 2
+    FOR j = i + 1 TO n - 1
+        IF Product[i].title = Product[j].title AND
+           Product[i].seller = Product[j].seller THEN
+            MarkDuplicate(j)
+        END IF
+    END FOR
+END FOR
+
+TIME COMPLEXITY: Θ(n²)
+SPACE COMPLEXITY: Θ(1) auxiliary space, excluding output
+
+
+M2: API RATE LIMITER
+
+INPUT: n requests
+OUTPUT: Number of audit operations
+
+i = 1
+count = 0
+
+WHILE i < n
+    FOR j = 0 TO i - 1
+        Audit(Request[j])
+        count = count + 1
+    END FOR
+    i = i * 2
+END WHILE
+
+PRINT count
+
+TIME COMPLEXITY: Θ(n)
+SPACE COMPLEXITY: Θ(1) auxiliary space
+
+
+M3: PRODUCT SEARCH
+
+S1: SEQUENTIAL SEARCH
+
+INPUT: Unsorted product list and target
+OUTPUT: Target position or not found
+
+FOR each product in the list
+    IF product = target THEN
+        RETURN FOUND
+    END IF
+END FOR
+
+RETURN NOT FOUND
+
+TIME COMPLEXITY: Best Θ(1), Worst Θ(n)
+
+
+S2: BINARY SEARCH
+
+INPUT: Sorted product list and target
+OUTPUT: Target position or not found
+
+low = 0
+high = n - 1
+
+WHILE low <= high
+    mid = FLOOR((low + high) / 2)
+
+    IF Product[mid] = target THEN
+        RETURN FOUND
+    ELSE IF Product[mid] < target THEN
+        low = mid + 1
+    ELSE
+        high = mid - 1
+    END IF
+END WHILE
+
+RETURN NOT FOUND
+
+TIME COMPLEXITY: Θ(log n)
+ITERATIVE AUXILIARY SPACE: Θ(1)
+RECURSIVE AUXILIARY SPACE: Θ(log n)
+
+
+M4: RECOMMENDATION ENGINE
+
+CURRENT DESIGN:
+T(n) = 4T(n/2) + n
+
+REDESIGNED VERSION:
+T(n) = 2T(n/2) + n
+
+CURRENT TIME COMPLEXITY: Θ(n²)
+REDESIGNED TIME COMPLEXITY: Θ(n log n)
+
+
+M5: SALES ANALYTICS ENGINE
+
+RECURRENCE:
+T(n) = 2T(n/2) + n log n
+
+OUTPUT: Sales analytics result
+
+TIME COMPLEXITY: Θ(n log² n)
+
+REPORT GENERATOR:
+f(n) = 3n² + 10n log n + 50
+
+ASYMPTOTIC COMPLEXITY: Θ(n²)
+
+
+FINAL SCALABILITY RECOMMENDATIONS
+
+1. Use hashing to detect duplicate listings efficiently.
+2. Maintain a sorted index for binary product search.
+3. Reduce unnecessary replication in the recommendation engine.
+4. Optimize sales analytics using efficient processing methods.
+5. Compare estimated operation counts against the 10-minute
+   nightly processing limit.
