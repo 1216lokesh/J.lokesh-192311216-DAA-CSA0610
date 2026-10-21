@@ -1,0 +1,174 @@
+CSA06 CO2 — DEBUGGING AND OPTIMISATION TASK
+PSEUDOCODES FOR ALL FUNCTIONS
+
+============================================================
+1. STABLE INSERTION SORT — HIGHEST SEVERITY FIRST
+============================================================
+ALGORITHM SortAlerts(alerts)
+BEGIN
+    FOR i ← 1 TO length(alerts) - 1
+        key ← alerts[i]
+        j ← i - 1
+
+        WHILE j ≥ 0 AND alerts[j].severity < key.severity
+            alerts[j + 1] ← alerts[j]
+            j ← j - 1
+        END WHILE
+
+        alerts[j + 1] ← key
+    END FOR
+
+    RETURN alerts
+END
+
+The comparison uses < rather than ≤ so equal-severity alerts keep
+their original arrival order.
+
+============================================================
+2. BLOCKLIST LOOKUP
+============================================================
+ALGORITHM IsBlocked(blocklist, ip)
+BEGIN
+    blockSet ← CONVERT blocklist TO SET
+    IF ip IS IN blockSet THEN
+        RETURN TRUE
+    ELSE
+        RETURN FALSE
+    END IF
+END
+
+For repeated queries, build the set once and reuse it. Set membership
+is expected O(1) average time after O(b) construction for b entries.
+
+============================================================
+3. BRUTE-FORCE STRING MATCHING — ALL OCCURRENCES
+============================================================
+ALGORITHM FindSignature(log, pattern)
+BEGIN
+    IF pattern is empty THEN
+        RETURN all positions from 0 through length(log)
+    END IF
+
+    n ← length(log)
+    m ← length(pattern)
+    hits ← empty list
+
+    FOR i ← 0 TO n - m
+        j ← 0
+        WHILE j < m AND log[i + j] = pattern[j]
+            j ← j + 1
+        END WHILE
+
+        IF j = m THEN
+            APPEND i TO hits
+        END IF
+    END FOR
+
+    RETURN hits
+END
+
+The upper limit n - m is inclusive. A match is recorded only if all
+m characters match. This also supports overlapping matches.
+
+============================================================
+4. BRUTE-FORCE CLOSEST PAIR — CORRECTED
+============================================================
+ALGORITHM ClosestLogins(events)
+BEGIN
+    IF length(events) < 2 THEN
+        RETURN (NONE, INFINITY)
+    END IF
+
+    bestSquared ← squared distance between events[0] and events[1]
+    bestPair ← (0, 1)
+
+    FOR i ← 0 TO length(events) - 2
+        FOR j ← i + 1 TO length(events) - 1
+            dx ← events[i].x - events[j].x
+            dy ← events[i].y - events[j].y
+            dSquared ← dx × dx + dy × dy
+
+            IF dSquared < bestSquared THEN
+                bestSquared ← dSquared
+                bestPair ← (i, j)
+            END IF
+        END FOR
+    END FOR
+
+    RETURN (bestPair, SQRT(bestSquared))
+END
+
+Every distinct unordered pair is checked once. Square roots are
+avoided inside the loop by comparing squared distances.
+
+============================================================
+5. OPTIMIZED CLOSEST PAIR — SORT, DIVIDE, AND PRUNE
+============================================================
+ALGORITHM ClosestPairOptimized(points)
+BEGIN
+    SORT points by x-coordinate
+    RETURN Solve(points)
+END
+
+ALGORITHM Solve(points)
+BEGIN
+    IF number of points ≤ 3 THEN
+        RETURN brute-force closest pair for this group
+    END IF
+
+    DIVIDE points into left and right halves
+    midX ← x-coordinate of the dividing point
+
+    leftResult ← Solve(left half)
+    rightResult ← Solve(right half)
+    bestResult ← result with smaller squared distance
+
+    strip ← points whose squared horizontal distance from midX
+            is less than best squared distance
+    SORT strip by y-coordinate
+
+    FOR each point p in strip, in y-order
+        Compare following points q while
+        (q.y - p.y)^2 < best squared distance
+        Update best pair and best squared distance if improved
+    END FOR
+
+    RETURN best pair and square root of best squared distance
+END
+
+This educational version sorts each strip at each recursive level,
+giving O(n log^2 n) time. A more advanced implementation can maintain
+y-sorted lists to achieve O(n log n).
+
+============================================================
+6. TEST HARNESS — PSEUDOCODE
+============================================================
+BEGIN
+    Test alert sorting:
+        verify descending severity
+        verify equal-severity arrival order
+        verify empty input
+
+    Test blocklist:
+        test present IP
+        test absent IP
+        test empty blocklist
+
+    Test signature matching:
+        test multiple matches
+        test match at end of log
+        test pattern longer than log
+        test overlapping matches
+        test empty log
+
+    Test closest pair:
+        test supplied events
+        test empty event list
+        test one event
+        compare brute-force and optimized distances
+
+    Generate batches of 1000, 2000, 4000, and 8000 events
+    Count distance calculations and measure runtime for both methods
+    Compare insertion-sort comparisons on nearly sorted and random data
+    OUTPUT all results
+END
