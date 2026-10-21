@@ -1,0 +1,146 @@
+============================================================
+Q1 - SORTING ALGORITHMS
+============================================================
+
+Dataset: Reverse Sorted [9, 7, 5, 3, 1]
+Selection Sort | Sorted: [1, 3, 5, 7, 9] | Comparisons: 10 | Swaps/Movements: 2
+Bubble Sort | Sorted: [1, 3, 5, 7, 9] | Comparisons: 10 | Swaps/Movements: 10
+Insertion Sort | Sorted: [1, 3, 5, 7, 9] | Comparisons: 10 | Swaps/Movements: 14
+
+Dataset: Nearly Sorted [1, 2, 3, 5, 4]
+Selection Sort | Sorted: [1, 2, 3, 4, 5] | Comparisons: 10 | Swaps/Movements: 1
+Bubble Sort | Sorted: [1, 2, 3, 4, 5] | Comparisons: 7 | Swaps/Movements: 1
+Insertion Sort | Sorted: [1, 2, 3, 4, 5] | Comparisons: 5 | Swaps/Movements: 5
+
+Dataset: Duplicate Values [4, 4, 4, 4, 4]
+Selection Sort | Sorted: [4, 4, 4, 4, 4] | Comparisons: 10 | Swaps/Movements: 0
+Bubble Sort | Sorted: [4, 4, 4, 4, 4] | Comparisons: 4 | Swaps/Movements: 0
+Insertion Sort | Sorted: [4, 4, 4, 4, 4] | Comparisons: 4 | Swaps/Movements: 4
+
+============================================================
+Q2 - SEQUENTIAL SEARCH
+============================================================
+Beginning | Target: T-101 | Position: 0 | Comparisons: 1
+Middle | Target: T-205 | Position: 2 | Comparisons: 3
+End | Target: T-415 | Position: 4 | Comparisons: 5
+Unsuccessful | Target: T-999 | Position: -1 | Comparisons: 5
+
+List-size experiment:
+n = 10 | Beginning | Comparisons: 1
+n = 10 | Middle | Comparisons: 6
+n = 10 | End | Comparisons: 10
+n = 10 | Unsuccessful | Comparisons: 10
+n = 100 | Beginning | Comparisons: 1
+n = 100 | Middle | Comparisons: 51
+n = 100 | End | Comparisons: 100
+n = 100 | Unsuccessful | Comparisons: 100
+n = 1000 | Beginning | Comparisons: 1
+n = 1000 | Middle | Comparisons: 501
+n = 1000 | End | Comparisons: 1000
+n = 1000 | Unsuccessful | Comparisons: 1000
+
+============================================================
+Q3 - BRUTE-FORCE STRING MATCHING
+============================================================
+Successful match | Text: HELLO WORLD | Pattern: WORLD | Position: 6 | Comparisons: 11
+Repeated comparisons | Text: AAAAAAAAAA | Pattern: AAAAB | Position: -1 | Comparisons: 30
+Unsuccessful match | Text: COMPUTER SCIENCE | Pattern: DATA | Position: -1 | Comparisons: 13
+
+============================================================
+Q4 - BRUTE-FORCE CLOSEST PAIR
+============================================================
+Points: [(0, 0), (3, 4), (1, 1), (8, 8), (2, 2)]
+Closest pair: ((0, 0), (1, 1))
+Minimum distance: 1.4142135623730951
+Pairs examined: 10
+Distance calculations: 10
+Execution time: 3.1624000030205934e-05
+
+Dataset size: 100
+Pairs examined: 4950
+Distance calculations: 4950
+Execution time: 0.001771 seconds
+
+Dataset size: 500
+Pairs examined: 124750
+Distance calculations: 124750
+Execution time: 0.042423 seconds
+
+Dataset size: 1000
+Pairs examined: 499500
+Distance calculations: 499500
+Execution time: 0.160808 seconds
+
+============================================================
+Q5 - BRUTE-FORCE CONVEX HULL
+============================================================
+
+Test: Boundary and interior points
+Input points: [(0, 0), (4, 0), (4, 4), (0, 4), (2, 2), (1, 1), (3, 2)]
+Hull boundary points: [(0, 0), (4, 0), (4, 4), (0, 4)]
+
+Test: Irregular configuration
+Input points: [(0, 0), (5, 1), (4, 5), (1, 4), (2, 2), (3, 1), (2, 3)]
+Hull boundary points: [(0, 0), (5, 1), (4, 5), (1, 4)]
+
+============================================================
+Q6 - EXHAUSTIVE SEARCH
+============================================================
+Weights: [2, 3, 4, 5]
+Values: [3, 4, 5, 8]
+Capacity: 8
+Selected package indices: [1, 3]
+Total weight: 8
+Total value: 12
+Combinations examined: 16
+
+Packages: 10
+Combinations examined: 1024
+Best value: 90
+Execution time: 0.001259 seconds
+
+Packages: 15
+Combinations examined: 32768
+Best value: 136
+Execution time: 0.076532 seconds
+
+Packages: 18
+Combinations examined: 262144
+Best value: 168
+Execution time: 0.582264 seconds
+
+Packages: 20
+Combinations examined: 1048576
+Best value: 190
+Execution time: 2.673985 seconds
+
+============================================================
+Q7 - REDESIGN AND VALIDATION
+============================================================
+
+Points: 100
+Original distance calculations: 4950
+Redesigned distance checks: 137
+Original minimum distance: 81.12536272685828
+Redesigned minimum distance: 81.12536272685828
+Distances agree: True
+Original time: 0.001406 seconds
+Redesigned time: 0.000267 seconds
+
+Points: 500
+Original distance calculations: 124750
+Redesigned distance checks: 554
+Original minimum distance: 30.861056767176805
+Redesigned minimum distance: 30.861056767176805
+Distances agree: True
+Original time: 0.037415 seconds
+Redesigned time: 0.001382 seconds
+
+Points: 1000
+Original distance calculations: 499500
+Redesigned distance checks: 1161
+Original minimum distance: 13.593152188925812
+Redesigned minimum distance: 13.593152188925812
+Distances agree: True
+Original time: 0.152101 seconds
+Redesigned time: 0.003093 seconds
