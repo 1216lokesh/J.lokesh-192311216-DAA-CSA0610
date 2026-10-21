@@ -1,0 +1,319 @@
+DAA ASSIGNMENT 2 — PSEUDOCODES (Q1–Q7)
+
+============================================================
+Q1. SORTING ALGORITHMS
+============================================================
+
+Algorithm 1: Selection Sort
+BEGIN
+    INPUT array A
+    comparisons ← 0
+    swaps ← 0
+    n ← length(A)
+
+    FOR i ← 0 TO n - 2
+        minIndex ← i
+        FOR j ← i + 1 TO n - 1
+            comparisons ← comparisons + 1
+            IF A[j] < A[minIndex] THEN
+                minIndex ← j
+            END IF
+        END FOR
+
+        IF minIndex ≠ i THEN
+            SWAP A[i], A[minIndex]
+            swaps ← swaps + 1
+        END IF
+    END FOR
+
+    OUTPUT A, comparisons, swaps
+END
+
+
+Algorithm 2: Bubble Sort
+BEGIN
+    INPUT array A
+    comparisons ← 0
+    swaps ← 0
+    n ← length(A)
+
+    FOR i ← 0 TO n - 2
+        swapped ← FALSE
+        FOR j ← 0 TO n - i - 2
+            comparisons ← comparisons + 1
+            IF A[j] > A[j + 1] THEN
+                SWAP A[j], A[j + 1]
+                swaps ← swaps + 1
+                swapped ← TRUE
+            END IF
+        END FOR
+
+        IF swapped = FALSE THEN
+            BREAK
+        END IF
+    END FOR
+
+    OUTPUT A, comparisons, swaps
+END
+
+
+Algorithm 3: Insertion Sort
+BEGIN
+    INPUT array A
+    comparisons ← 0
+    movements ← 0
+
+    FOR i ← 1 TO length(A) - 1
+        key ← A[i]
+        j ← i - 1
+
+        WHILE j ≥ 0
+            comparisons ← comparisons + 1
+            IF A[j] > key THEN
+                A[j + 1] ← A[j]
+                movements ← movements + 1
+                j ← j - 1
+            ELSE
+                BREAK
+            END IF
+        END WHILE
+
+        A[j + 1] ← key
+        movements ← movements + 1
+    END FOR
+
+    OUTPUT A, comparisons, movements
+END
+
+Test the three algorithms using reverse-sorted, nearly-sorted,
+and duplicate-value datasets.
+
+
+============================================================
+Q2. SEQUENTIAL SEARCH
+============================================================
+
+BEGIN
+    INPUT list A
+    INPUT target
+    comparisons ← 0
+
+    FOR i ← 0 TO length(A) - 1
+        comparisons ← comparisons + 1
+
+        IF A[i] = target THEN
+            OUTPUT "Target found at index", i
+            OUTPUT "Comparisons", comparisons
+            STOP
+        END IF
+    END FOR
+
+    OUTPUT "Target not found"
+    OUTPUT "Comparisons", comparisons
+END
+
+
+============================================================
+Q3. BRUTE-FORCE STRING MATCHING
+============================================================
+
+BEGIN
+    INPUT text T
+    INPUT pattern P
+    n ← length(T)
+    m ← length(P)
+    comparisons ← 0
+
+    FOR i ← 0 TO n - m
+        j ← 0
+
+        WHILE j < m
+            comparisons ← comparisons + 1
+
+            IF T[i + j] ≠ P[j] THEN
+                BREAK
+            END IF
+
+            j ← j + 1
+        END WHILE
+
+        IF j = m THEN
+            OUTPUT "Pattern found at position", i
+            OUTPUT "Character comparisons", comparisons
+            STOP
+        END IF
+    END FOR
+
+    OUTPUT "Pattern not found"
+    OUTPUT "Character comparisons", comparisons
+END
+
+
+============================================================
+Q4. BRUTE-FORCE CLOSEST PAIR OF POINTS
+============================================================
+
+BEGIN
+    INPUT set of points P
+    minDistance ← INFINITY
+    closestPair ← NONE
+    calculations ← 0
+
+    FOR i ← 0 TO length(P) - 2
+        FOR j ← i + 1 TO length(P) - 1
+            dx ← P[i].x - P[j].x
+            dy ← P[i].y - P[j].y
+            currentDistance ← SQRT(dx × dx + dy × dy)
+            calculations ← calculations + 1
+
+            IF currentDistance < minDistance THEN
+                minDistance ← currentDistance
+                closestPair ← (P[i], P[j])
+            END IF
+        END FOR
+    END FOR
+
+    OUTPUT closestPair
+    OUTPUT minDistance
+    OUTPUT calculations
+END
+
+
+============================================================
+Q5. BRUTE-FORCE CONVEX HULL
+============================================================
+
+BEGIN
+    INPUT set of points P
+    hull ← EMPTY SET
+
+    FOR each pair of distinct points p and q in P
+        leftSide ← FALSE
+        rightSide ← FALSE
+
+        FOR each point r in P, excluding p and q
+            orientation ← (q.x - p.x) × (r.y - p.y)
+                         - (q.y - p.y) × (r.x - p.x)
+
+            IF orientation > 0 THEN
+                leftSide ← TRUE
+            ELSE IF orientation < 0 THEN
+                rightSide ← TRUE
+            END IF
+        END FOR
+
+        IF NOT (leftSide AND rightSide) THEN
+            ADD p to hull
+            ADD q to hull
+        END IF
+    END FOR
+
+    REMOVE duplicate points from hull
+    ORDER hull points around the boundary
+    OUTPUT hull
+END
+
+
+============================================================
+Q6. EXHAUSTIVE SEARCH FOR PACKAGE SELECTION (0/1 KNAPSACK)
+============================================================
+
+BEGIN
+    INPUT package weights Wt[0...n-1]
+    INPUT package values V[0...n-1]
+    INPUT capacity C
+
+    bestValue ← 0
+    bestWeight ← 0
+    bestSelection ← EMPTY SET
+
+    FOR mask ← 0 TO 2^n - 1
+        totalWeight ← 0
+        totalValue ← 0
+        selection ← EMPTY SET
+
+        FOR i ← 0 TO n - 1
+            IF package i is selected in mask THEN
+                totalWeight ← totalWeight + Wt[i]
+                totalValue ← totalValue + V[i]
+                ADD package i to selection
+            END IF
+        END FOR
+
+        IF totalWeight ≤ C AND totalValue > bestValue THEN
+            bestValue ← totalValue
+            bestWeight ← totalWeight
+            bestSelection ← selection
+        END IF
+    END FOR
+
+    OUTPUT bestSelection
+    OUTPUT bestWeight
+    OUTPUT bestValue
+END
+
+
+============================================================
+Q7. DIVIDE-AND-CONQUER CLOSEST PAIR OF POINTS
+============================================================
+
+Algorithm: ClosestPair(P)
+BEGIN
+    SORT points P by x-coordinate
+
+    RETURN Solve(P)
+END
+
+
+Algorithm: Solve(P)
+BEGIN
+    n ← length(P)
+
+    IF n ≤ 3 THEN
+        RETURN the closest pair found by brute force
+    END IF
+
+    DIVIDE P into left half L and right half R
+    midX ← x-coordinate of the middle point
+
+    (leftPair, leftDistance) ← Solve(L)
+    (rightPair, rightDistance) ← Solve(R)
+
+    IF leftDistance ≤ rightDistance THEN
+        bestPair ← leftPair
+        bestDistance ← leftDistance
+    ELSE
+        bestPair ← rightPair
+        bestDistance ← rightDistance
+    END IF
+
+    strip ← all points p where |p.x - midX| < bestDistance
+    SORT strip by y-coordinate
+
+    FOR i ← 0 TO length(strip) - 1
+        j ← i + 1
+
+        WHILE j < length(strip) AND
+              strip[j].y - strip[i].y < bestDistance
+
+            d ← EuclideanDistance(strip[i], strip[j])
+
+            IF d < bestDistance THEN
+                bestDistance ← d
+                bestPair ← (strip[i], strip[j])
+            END IF
+
+            j ← j + 1
+        END WHILE
+    END FOR
+
+    RETURN (bestPair, bestDistance)
+END
+
+
+Function: EuclideanDistance(p, q)
+BEGIN
+    dx ← p.x - q.x
+    dy ← p.y - q.y
+    RETURN SQRT(dx × dx + dy × dy)
+END
