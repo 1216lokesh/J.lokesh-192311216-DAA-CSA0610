@@ -1,0 +1,147 @@
+DAA ASSIGNMENT 3 (CO3) — ALL PSEUDOCODES
+
+Q1A. MAXIMUM AND MINIMUM USING PAIRWISE TOURNAMENT
+BEGIN
+  IF n = 0: REPORT invalid input
+  IF n is even:
+      Compare first two values; assign smaller to MIN and larger to MAX
+      comparisons = 1; start = 2
+  ELSE:
+      MIN = MAX = first value; start = 1
+  FOR i = start TO n-2 STEP 2:
+      Compare A[i] and A[i+1] to obtain localMin and localMax
+      Compare localMin with MIN; update MIN if smaller
+      Compare localMax with MAX; update MAX if larger
+  RETURN MIN, MAX, comparisons
+END
+Comparison count is at most ceil(3n/2)-2.
+
+Q1B. BINARY SEARCH
+BEGIN
+  low = 0; high = n-1
+  WHILE low <= high:
+      mid = floor((low+high)/2)
+      IF A[mid] = target: RETURN mid
+      ELSE IF target < A[mid]: high = mid-1
+      ELSE: low = mid+1
+  RETURN NOT_FOUND
+END
+
+Q2A. MERGE SORT
+MERGE_SORT(A)
+BEGIN
+  IF length(A) <= 1: RETURN A
+  Divide A into left and right halves
+  L = MERGE_SORT(left); R = MERGE_SORT(right)
+  RETURN MERGE(L,R)
+END
+MERGE(L,R)
+BEGIN
+  Compare first unprocessed items and copy smaller item to output
+  Repeat while both lists contain unprocessed items
+  Append remaining items
+  RETURN output
+END
+
+Q2B. QUICK SORT (LAST ELEMENT AS PIVOT)
+QUICK_SORT(A, low, high)
+BEGIN
+  IF low < high:
+      pivotIndex = PARTITION(A, low, high)
+      QUICK_SORT(A, low, pivotIndex-1)
+      QUICK_SORT(A, pivotIndex+1, high)
+END
+PARTITION(A, low, high)
+BEGIN
+  pivot = A[high]; i = low
+  FOR j = low TO high-1:
+      IF A[j] <= pivot:
+          SWAP A[i], A[j]; i = i+1
+  SWAP A[i], A[high]
+  RETURN i
+END
+
+Q3. KARATSUBA MULTIPLICATION
+KARATSUBA(x,y)
+BEGIN
+  IF x or y is a single digit: RETURN x*y
+  Choose base B = 10^m to split each integer
+  x = aB + b; y = cB + d
+  z0 = KARATSUBA(b,d)
+  z2 = KARATSUBA(a,c)
+  z1 = KARATSUBA(a+b,c+d)
+  RETURN z2*B^2 + (z1-z2-z0)*B + z0
+END
+Standard recursive multiplication uses four submultiplications.
+Karatsuba uses three. Recurrence:
+T(n) = 3T(n/2) + O(n), hence O(n^(log2 3)) ≈ O(n^1.585).
+
+Q4. STRASSEN MATRIX MULTIPLICATION
+STRASSEN(A,B)
+BEGIN
+  IF matrix size is at or below cutoff:
+      RETURN conventional multiplication
+  Divide A into A11,A12,A21,A22
+  Divide B into B11,B12,B21,B22
+  M1=(A11+A22)(B11+B22)
+  M2=(A21+A22)B11
+  M3=A11(B12-B22)
+  M4=A22(B21-B11)
+  M5=(A11+A12)B22
+  M6=(A21-A11)(B11+B12)
+  M7=(A12-A22)(B21+B22)
+  C11=M1+M4-M5+M7
+  C12=M3+M5
+  C21=M2+M4
+  C22=M1-M2+M3+M6
+  Combine C11,C12,C21,C22
+  RETURN C
+END
+Pad non-power-of-two square matrices with zeros, then remove padding.
+Recurrence T(n)=7T(n/2)+O(n^2), so O(n^(log2 7)) ≈ O(n^2.807).
+
+Q5. CLOSEST PAIR — DIVIDE AND CONQUER
+CLOSEST_PAIR(P)
+BEGIN
+  Sort points by x-coordinate and by y-coordinate
+  RETURN SOLVE(Px, Py)
+END
+SOLVE(Px,Py)
+BEGIN
+  IF number of points <= 3: use brute force and RETURN closest pair
+  Divide Px into left and right halves
+  Partition Py into corresponding leftY and rightY lists
+  Recursively find closest pair in each half
+  delta = smaller of the two distances
+  Create strip of points within delta of dividing x-coordinate
+  Scan strip in y-order; compare only the next at most 7 points
+  Update closest pair and delta when a shorter distance is found
+  RETURN closest pair and distance
+END
+Expected time with x/y lists maintained: O(n log n).
+
+Q6A. MEDIAN OF MEDIANS (K-TH SMALLEST)
+SELECT(A,k)
+BEGIN
+  IF length(A) <= 5: sort A and RETURN A[k]
+  Divide A into groups of at most five
+  Find each group's median
+  Recursively find the median of the group medians as pivot
+  Partition A into values less than, equal to, and greater than pivot
+  IF k is in lower group: recurse on lower group
+  ELSE IF k is in equal group: RETURN pivot
+  ELSE: recurse on upper group with adjusted k
+END
+The pivot guarantees a constant fraction is discarded. Worst-case time O(n).
+
+Q6B. MEET-IN-THE-MIDDLE SUBSET SUM
+BEGIN
+  Divide input values into left and right halves
+  Generate all subset sums of the left half and store sums with subsets
+  Generate each subset sum of the right half
+  For each right sum s, search for target-s in stored left sums
+  IF a complement exists: combine the two subsets and RETURN solution
+  RETURN no solution
+END
+Time and space are approximately O(2^(n/2)) (plus sorting or lookup work),
+instead of O(2^n) straightforward enumeration.
